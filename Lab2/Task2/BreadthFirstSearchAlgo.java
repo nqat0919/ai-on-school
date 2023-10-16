@@ -1,23 +1,12 @@
-package Lab2;
+package Lab2.Task2;
 
+import Lab2.*;
 import java.util.*;
 
-public class BreadthFirstSearchAlgo implements ISearchAlgo{
+public class BreadthFirstSearchAlgo implements ISearchAlgo {
 
     @Override
     public Node execute(Node root, String goal) {
-        Queue<Node> frontier = new LinkedList<Node>();
-        List<Node> explored = new ArrayList<>();
-        frontier.offer(root);
-        while (!frontier.isEmpty()) {
-            Node current = frontier.poll();
-            if (current.getLabel().equals(goal)) return current;
-            for (Node child : current.getChildrenNodes()) {
-                if (frontier.contains(child) || explored.contains(child)) continue;
-                frontier.offer(child);
-                child.setParent(current);
-            }
-        }
         return null;
     }
 
@@ -29,16 +18,15 @@ public class BreadthFirstSearchAlgo implements ISearchAlgo{
         frontier.offer(root);
         while (!frontier.isEmpty()) {
             Node current = frontier.poll();
+            explored.add(current);
             // meet the start point
-            if (current.getLabel().equals(start) && !check) {
+            if (current.getLabel().equals(goal) && check) return current;
+            if (current.getLabel().equals(start)) {
                 check = true;
                 frontier.clear();
                 explored.clear();
                 current.setParent(null);
-                frontier.add(current);
-                continue;
             }
-            if (current.getLabel().equals(goal) && check) return current;
             for (Node child : current.getChildrenNodes()) {
                 if (frontier.contains(child) || explored.contains(child)) continue;
                 frontier.offer(child);
@@ -60,9 +48,7 @@ public class BreadthFirstSearchAlgo implements ISearchAlgo{
         nodeC.addEdge(nodeF, 2); nodeD.addEdge(nodeH, 7);
         nodeE.addEdge(nodeG, 6); nodeF.addEdge(nodeG, 1);
         ISearchAlgo algo1 = new BreadthFirstSearchAlgo();
-        Node result = algo1.execute(nodeS, "G");
-        System.out.println(NodeUtils.printPath(result));
-        result = algo1.execute(nodeS, "A", "G");
+        Node result = algo1.execute(nodeS, "A", "G");
         System.out.println(NodeUtils.printPath(result));
     }
 }
